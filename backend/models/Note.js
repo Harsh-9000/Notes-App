@@ -9,10 +9,18 @@ const NoteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isPinned: {
+        type: Boolean,
+        default: false,
+    },
     createdOn: {
         type: Date,
         default: new Date().getTime()
     },
+    updatedOn: {
+        type: Date,
+        default: new Date().getTime()
+    }
 })
 
 const NoteModel = mongoose.model('Note', NoteSchema);

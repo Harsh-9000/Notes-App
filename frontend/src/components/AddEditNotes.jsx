@@ -1,12 +1,19 @@
-import { useState } from "react"
-import axios from "axios"
-import { MdClose } from 'react-icons/md'
-import { toast } from 'react-toastify';
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { MdClose } from 'react-icons/md';
 
-const AddEditNotes = ({ noteData, type, getAllNotes, onClose }) => {
+const AddEditNotes = ({ noteData, type, getAllNotes, onClose, handleShowToast }) => {
     const [title, setTitle] = useState(noteData?.title || "");
     const [content, setContent] = useState(noteData?.content || "");
-    const [error, setError] = useState([]);
+    const [error, setError] = useState("");
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.style.height = "auto";
+            contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
+        }
+    }, [content]);
 
     const addNewNote = async () => {
         try {
@@ -16,16 +23,16 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose }) => {
             });
 
             if (response.data && response.data.note) {
+                handleShowToast("Note Added Successfully")
                 getAllNotes();
                 onClose();
-                toast.success("Note added successfully!");
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message)
+                setError(error.response.data.message);
             }
         }
-    }
+    };
 
     const editNote = async () => {
         try {
@@ -35,16 +42,16 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose }) => {
             });
 
             if (response.data && response.data.note) {
+                handleShowToast("Note Updated Successfully")
                 getAllNotes();
                 onClose();
-                toast.success("Note updated successfully!");
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message)
+                setError(error.response.data.message);
             }
         }
-    }
+    };
 
     const handleAddNote = () => {
         if (!title) {
@@ -60,36 +67,41 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose }) => {
         setError("");
 
         if (type === 'edit') {
-            editNote()
+            editNote();
         } else {
-            addNewNote()
+            addNewNote();
         }
-    }
+    };
 
     return (
-        <div className="relative">
-            <button className="w-10 h-10 rounded-full flex items-center justify-center absolute -top-3 -right-3 hover:bg-slate-50" onClick={onClose}>
-                <MdClose className="text-xl text-slate-400" />
+        <div className="relative max-h-full overflow-hidden">
+            <button className="w-10 h-10 rounded-full flex items-center justify-center absolute -top-3 -right-3" onClick={onClose}>
+                <MdClose className="text-xl text-slate-400 hover:text-retroWhite" />
             </button>
 
-            <div className="flex flex-col gap-2">
-                <label className="text-xs text-slate-400">Title</label>
+            <div className="flex flex-col gap-2 mt-7 relative">
+                <label className="text-xl text-retroWhite absolute -top-3 left-6 bg-black px-1 uppercase" style={{ textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)' }}>Title</label>
                 <input
                     type="text"
-                    className="text-2xl text-slate-950 outline-none"
-                    placeholder="Title"
+                    className="text-2xl text-retroWhite outline-none px-2 py-4 bg-black w-full border-2"
+                    style={{ textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)', boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.7)' }}
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                 />
             </div>
 
-            <div className="flex flex-col gap-2 mt-4">
-                <label className="text-xs text-slate-400">Content</label>
+            <div className="flex flex-col gap-2 mt-7 relative" style={{ textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)' }}>
+                <label className="text-xl text-retroWhite absolute -top-3 left-6 bg-black px-1 uppercase">Content</label>
                 <textarea
-                    type="text"
-                    className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
-                    placeholder="Content"
-                    rows={10}
+                    ref={contentRef}
+                    className="text-md text-retroWhite outline-none bg-black px-2 py-4 border-2"
+                    style={{
+                        height: "auto",
+                        overflowY: "hidden",
+                        resize: "none",
+                        textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)',
+                        boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.7)'
+                    }}
                     value={content}
                     onChange={(event) => setContent(event.target.value)}
                 />
@@ -98,13 +110,13 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose }) => {
             {error && <p className="text-red-500 text-xs pt-4">{error}</p>}
 
             <button
-                className="w-full text-sm bg-primary text-white rounded my-1 hover:bg-yellow-500 font-medium mt-5 p-3"
+                className="w-full text-sm bg-black border-2 text-retroWhite rounded my-1 hover:bg-retroWhite hover:text-black font-medium mt-5 p-3"
                 onClick={handleAddNote}
             >
                 {type === "edit" ? 'Update' : 'Add'}
             </button>
         </div>
-    )
+    );
 }
 
-export default AddEditNotes
+export default AddEditNotes;
