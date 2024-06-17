@@ -8,7 +8,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
     const gridTemplateColumns = `repeat(${totalPages}, minmax(0, 1fr))`;
 
     return (
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center my-4">
             <div
                 className="grid"
                 style={{

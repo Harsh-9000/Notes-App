@@ -143,9 +143,9 @@ const Home = () => {
     <div className="min-h-screen flex flex-col bg-black">
       <Navbar onSearchNote={onSearchNote} handleClearSearch={handleClearSearch} />
 
-      <div className="container mx-auto flex-1">
+      <div className="container mx-auto flex-1 px-4">
         {allNotes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
             {allNotes.map((note, index) => (
               <NoteCard
                 key={`${note._id}-${note.title}-${note.content}-${note.updatedOn}`}
@@ -178,7 +178,7 @@ const Home = () => {
       </div>
 
       <button
-        className="w-14 h-14 flex items-center justify-center rounded-2xl bg-black hover:bg-retroWhite text-white hover:text-black fixed right-6 bottom-10"
+        className="w-14 h-14 flex items-center justify-center rounded-2xl bg-black hover:bg-retroWhite text-white hover:text-black fixed right-6 bottom-10 sm:right-4 sm:bottom-8"
         onClick={() => {
           setOpenAddEditModal({ isShown: true, type: "add", data: null });
         }}
@@ -195,7 +195,7 @@ const Home = () => {
           content: {
             backgroundColor: "black",
             border: "2px solid rgba(255, 255, 255, 0.7)",
-            maxWidth: "40%",
+            maxWidth: "70%",
             maxHeight: "50%",
             overflowY: "auto",
             margin: "auto",
@@ -205,7 +205,7 @@ const Home = () => {
           }
         }}
         contentLabel=""
-        className="w-[40%] max-h-3/4 bg-black border-2 mx-auto p-5 overflow-auto"
+        className="lg:w-[40%] md:w-[60%] sm:w-[70%] max-h-3/4 bg-black border-2 mx-auto p-5 overflow-auto"
       >
         <AddEditNotes
           type={openAddEditModal.type}
@@ -227,3 +227,4 @@ const Home = () => {
 }
 
 export default Home;
+

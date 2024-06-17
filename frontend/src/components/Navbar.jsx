@@ -52,7 +52,7 @@ const Navbar = ({ onSearchNote, handleClearSearch }) => {
 
     return (
         <div className="bg-black flex items-center justify-between px-6 py-2 border-b-2" style={{ boxShadow: '0px 2px 4px rgba(255, 255, 255, 0.7)' }}>
-            <h2 className="text-4xl font-medium text-white py-2 uppercase" style={{ textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)' }}>
+            <h2 className="mr-4 text-4xl font-medium text-white py-2 uppercase" style={{ textShadow: '0px 2px 14px rgba(255, 255, 255, 0.7)' }}>
                 {text}
                 {showCursor && <Cursor cursorStyle='_' cursorBlinking={true} />}
             </h2>
